@@ -28,14 +28,15 @@ for %%F in (!input_files!) do (
 )
 
 echo.
-echo Done. Press any key to reset.
+echo Done. Files saved in "your location/pdftojpgtopdf" folder.
 pause >nul
 goto start
 
 :process
-set "file_path=%~1"
-set "output_path=%~dpn1_raster_d!dpi!_q!quality!.pdf"
+set "file_dir=%~dp1"
+set "out_dir=!file_dir!pdftojpgtopdf"
 
+if not exist "!out_dir!" mkdir "!out_dir!"
 echo   - %~nx1
-magick -density !dpi! "%file_path%" -background white -alpha remove -alpha off -compress jpeg -quality !quality! "%output_path%"
+magick -density !dpi! "%~1" -background white -alpha remove -alpha off -compress jpeg -quality !quality! "!out_dir!\%~n1_raster_d!dpi!_q!quality!.pdf"
 exit /b
